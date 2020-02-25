@@ -59,5 +59,17 @@ AND 3 IN (SELECT 3
 ORDER BY 3 DESC 
 
 10)
-
+SELECT name, totalrevenue
+FROM (
+SELECT Facilities.name, SUM(
+CASE WHEN memid =0
+THEN slots * Facilities.guestcost
+ELSE slots * membercost
+END ) AS totalrevenue
+FROM Bookings
+INNER JOIN Facilities ON Bookings.facid = Facilities.facid
+GROUP BY Facilities.name
+) AS selected_facilities
+WHERE totalrevenue <=1000
+ORDER BY totalrevenue
 
