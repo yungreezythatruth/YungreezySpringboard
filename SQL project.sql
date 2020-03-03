@@ -39,24 +39,23 @@ ORDER BY firstname
 
 8)
 SELECT name, 
-       firstname,
-       
-       CASE WHEN firstname = 'GUEST' THEN guestcost ELSE membercost END AS cost
+       firstname,  
+       CASE WHEN firstname = 'GUEST' THEN guestcost*slots ELSE membercost*slots END AS cost
 FROM country_club.Members members
 INNER JOIN country_club.Facilities facilities ON members.memid = facilities.facid INNER JOIN country_club.Bookings bookings ON bookings.facid = facilities.facid
 WHERE starttime LIKE '2012-09-14%'
-AND (3*slots) > 30
+AND cost > 30
 ORDER BY 3 DESC 
 
 9)
 SELECT name, 
        firstname,
-       CASE WHEN firstname = 'GUEST' THEN slots* ELSE membercost END AS cost
+       CASE WHEN firstname = 'GUEST' THEN guestcost*slots ELSE membercost*slots END AS cost
 FROM country_club.Members members INNER JOIN country_club.Facilities facilities ON members.memid = facilities.facid INNER JOIN country_club.Bookings bookings ON bookings.facid = facilities.facid
 WHERE starttime LIKE '2012-09-14%'
 AND 3 IN (SELECT 3 
           FROM country_club.Members members INNER JOIN country_club.Facilities facilities ON members.memid = facilities.facid INNER JOIN country_club.Bookings bookings ON bookings.facid = facilities.facid
-          WHERE (3*slots > 30))
+          WHERE (cost > 30))
 ORDER BY 3 DESC 
 
 10)
