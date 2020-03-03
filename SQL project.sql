@@ -1,7 +1,7 @@
 1)
 SELECT name
 FROM `Facilities`
-WHERE membercost =0
+WHERE membercost >0
 
 
 2)
@@ -17,10 +17,10 @@ WHERE membercost < 0.2 * monthlymaintenance
 4)
 SELECT *
 FROM `Facilities`
-WHERE facid
+WHERE facid IN (1,5)
 
 5)
-SELECT monthlymaintenance,
+SELECT name, monthlymaintenance 
 CASE WHEN monthlymaintenance > 100 THEN 'expensive' ELSE 'cheap' END AS price_category
 FROM `Facilities`
 
@@ -40,6 +40,7 @@ ORDER BY firstname
 8)
 SELECT name, 
        firstname,
+       
        CASE WHEN firstname = 'GUEST' THEN guestcost ELSE membercost END AS cost
 FROM country_club.Members members
 INNER JOIN country_club.Facilities facilities ON members.memid = facilities.facid INNER JOIN country_club.Bookings bookings ON bookings.facid = facilities.facid
@@ -50,7 +51,7 @@ ORDER BY 3 DESC
 9)
 SELECT name, 
        firstname,
-       CASE WHEN firstname = 'GUEST' THEN guestcost ELSE membercost END AS cost
+       CASE WHEN firstname = 'GUEST' THEN slots* ELSE membercost END AS cost
 FROM country_club.Members members INNER JOIN country_club.Facilities facilities ON members.memid = facilities.facid INNER JOIN country_club.Bookings bookings ON bookings.facid = facilities.facid
 WHERE starttime LIKE '2012-09-14%'
 AND 3 IN (SELECT 3 
